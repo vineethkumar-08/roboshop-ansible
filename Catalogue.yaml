@@ -55,5 +55,23 @@
         path: /app
 
 
+    - name: copy  mongo repo
+      ansible.builtin.copy: 
+        src: mongo.repo 
+        dest: /etc/yum.repos.d/mongo.repo
+
+    - name: install mongodb client
+      ansible.become.dnf:
+      name: mongodb.mongsh  
+      state: present
+
+    - name: check products loaded
+      ansible.builtin.command: mongosh --host '{{MONGODB.HOST}}"" --quite --eval 'db.mongo().getDBNames.imdexof("catalogue")'
+      register: catalogue.output
+
+    - name: print the output
+      ansible.builtin.debug:
+        msg: "{{catalogue.output}}"
+
 
 
