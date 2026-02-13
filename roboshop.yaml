@@ -42,7 +42,7 @@
       ttl: 1
       value: "{{ item.instances[0].private_ip_address }}"
       wait: true
-    loop: "{{ ec2_output.results }}" 
+    loop: "{{ ec2_output.results }}"  #list 
     when: action == "create " 
 
 
@@ -59,6 +59,17 @@
     when: # and
     - item.item == "frontend"
     - action == "create " 
+
+  - name: delete route53 records
+    amazon.aws.route53:
+      state: absent
+      zone: "{{ domain_name }}"
+      record: "{{ item }}-{{ env }}.{{ domain_name}}" # roboshoop.devopspractice08.online, 
+      type: A
+      ttl: 1
+      loop: "{{instance}}"
+      when: action == "destroy  " 
+    
 
   - name: delete ec2 instance
     amazon.aws.ec2_instance:
