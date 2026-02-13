@@ -76,7 +76,7 @@
     amazon.aws.ec2_instance:
       state: absent
       name: "{{ item }}-{{ env }}"
-      loop: "{{ instance }}"
+    loop: "{{ instance }}"
 
         
  
