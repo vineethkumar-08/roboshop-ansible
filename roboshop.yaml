@@ -1,10 +1,29 @@
-- name: start an instance with a public IP address
-  amazon.aws.ec2_instance:
-    name: "Ansible"
-    instance_type: t3.micro
-    security_group: sg-0397ae3d261c3d2e4
-    network_interfaces:
-      - assign_public_ip: true
-    image_id: ami-0220d79f3f480ecf5
-    tags:
-      Environment: Dev
+- name: create ec2 intance and route53 records
+  hosts: local
+  connection: local
+  vars:
+    sg_id: sg-0397ae3d261c3d2e4 
+    ami_id: ami-0220d79f3f480ecf5
+    Environment: dev
+    instances:
+    - mongodb 
+    - catalogue
+  tasks:
+    - name: create ec2 instance
+      amazon.aws.ec2_instance:
+        instance_type: t3.micro
+        security_group: "{{sg_id}}"
+        image_id: "{{ami_id}}"
+        name: "{{ item }}-{{Environment}}"
+      
+        tags:
+          project: roboshop
+          component: "{{item}}"
+          Environment: "{{Environment}}"
+          name: "{{ item }}-{{Environment}}"
+      loop: "{{ instances }}"
+      register: ec2_output
+    - name: print ec2_output name
+      ansible.builtin.debug:
+        msg: "{{ec2_output}}:"
+         
