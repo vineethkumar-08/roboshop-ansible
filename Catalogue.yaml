@@ -38,7 +38,17 @@
         src: /tmp/catalogue.zip
         dest: /app
         remote_src: yes
-
+        
+    - name: Install npm
+      community.general.npm:
+        name: coffee-script
+        path: /app/location
+  
+    
+    - name: copy  catalogue service
+      ansible.builtin.copy: 
+        src: catalogue.service
+        dest: /etc/systemd/system/catalogue.service
 
 
 
