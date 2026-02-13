@@ -4,12 +4,12 @@
   tasks:
     - name: copy mongo repo
       ansible.builtin.copy: 
-      src: mongo.repo
-      dest: /etc/yum.repos.d/mongo.repo
+        src: mongo.repo
+        dest: /etc/yum.repos.d/mongo.repo
 
     - name: installing mongodb
       ansible.builtin.dnf: 
-        name: mongodb-org -y
+        name: mongodb-org 
         state: present
         
 
