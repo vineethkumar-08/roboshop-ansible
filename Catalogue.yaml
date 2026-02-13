@@ -1,77 +1,83 @@
-- name : configure catalogue
+- name: configure catalogue
   hosts: catalogue
   become: yes
-  tasks:
-    - name: enable nodejs 20
-      ansible.builtin.command: dnf module enable nodejs:20 -y 
 
-    - name: install nodejs
+  vars:
+    mongodb_host: mongodb-dev.devopspractice08.online
+
+  tasks:
+
+    - name: Enable NodeJS 20 module
+      ansible.builtin.command: dnf module enable nodejs:20 -y
+
+    - name: Install NodeJS
       ansible.builtin.dnf:
         name: nodejs
         state: present
 
-
-    - name: Create a system user  roboshop
+    - name: Create roboshop system user
       ansible.builtin.user:
-        name: roboshop 
+        name: roboshop
         system: true
         home: /app
-        shell: /sbin/nologinn
+        shell: /sbin/nologin
         comment: "roboshop system user"
 
-  
-
-    - name: Setup Application Directory
+    - name: Create application directory
       ansible.builtin.file:
-        path: /app 
+        path: /app
         state: directory
+        owner: roboshop
+        group: roboshop
 
-
-    - name: Downloading catalogue
+    - name: Download catalogue artifact
       ansible.builtin.get_url:
-        url: https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip 
+        url: https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip
         dest: /tmp/catalogue.zip
-        
 
-    - name: unzipping catalogue
+    - name: Unzip catalogue
       ansible.builtin.unarchive:
         src: /tmp/catalogue.zip
         dest: /app
         remote_src: yes
-        
-    - name: Install npm
-      community.general.npm:
-        name: coffee-script
-        path: /app/location
-  
-    
-    - name: copy  catalogue service
-      ansible.builtin.copy: 
-        src: catalogue.service
-        dest: /etc/systemd/system/catalogue.service
+        owner: roboshop
+        group: roboshop
 
-    - name: Install npm dependencies
+    - name: Install NPM dependencies
       community.general.npm:
         path: /app
 
+    - name: Copy catalogue systemd service
+      ansible.builtin.copy:
+        src: catalogue.service
+        dest: /etc/systemd/system/catalogue.service
 
-    - name: copy  mongo repo
-      ansible.builtin.copy: 
-        src: mongo.repo 
+    - name: Copy Mongo repo
+      ansible.builtin.copy:
+        src: mongo.repo
         dest: /etc/yum.repos.d/mongo.repo
 
-    - name: install mongodb client
+    - name: Install MongoDB client
       ansible.builtin.dnf:
-      name: mongodb.mongsh  
-      state: present
+        name: mongodb-mongosh
+        state: present
 
-    - name: check products loaded
-      ansible.builtin.command: mongosh --host '{{MONGODB.HOST}}"" --quite --eval 'db.mongo().getDBNames.imdexof("catalogue")'
-      register: catalogue.output
+    - name: Check if catalogue DB exists
+      ansible.builtin.command: >
+        mongosh --host {{ mongodb_host }} --quiet --eval
+        'db.getMongo().getDBNames().indexOf("catalogue")'
+      register: catalogue_output
 
-    - name: print the output
+    - name: Print Mongo check result
       ansible.builtin.debug:
-        msg: "{{catalogue.output}}"
+        var: catalogue_output.stdout
 
+    - name: Reload systemd
+      ansible.builtin.systemd:
+        daemon_reload: yes
 
-
+    - name: Enable and start catalogue service
+      ansible.builtin.systemd:
+        name: catalogue
+        enabled: yes
+        state: started
