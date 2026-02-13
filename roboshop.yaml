@@ -4,6 +4,7 @@
   vars:
     sg_id: sg-0397ae3d261c3d2e4 
     ami_id: ami-0220d79f3f480ecf5
+    domin_name: devopspractice08.online
     env: dev
     instances:
     - mongodb 
@@ -27,4 +28,15 @@
   - name: print the output
     ansible.builtin.debug:
       msg: "{{ ec2_output }}"
+
+  - name: create route53 records
+    amazon.aws.route53:
+      state: present
+      zone: devopspractice08.online
+      record: 
+      type: A
+      ttl: 7200
+      value: 1.1.1.1,2.2.2.2,3.3.3.3
+      wait: true
+    loop: "{{ ec2_output.results }}"
          
