@@ -54,7 +54,7 @@
     amazon.aws.route53:
       state: present
       zone: "{{ domain_name }}"
-      record: "{{ item }}-{{ env }}.{{ domain_name}}" # roboshoop.devopspractice08.online, 
+      record: "{{ item.item }}-{{ env }}.{{ domain_name}}" # roboshoop.devopspractice08.online, 
       type: A
       ttl: 1
       value: "{{ item.instances[0].public_ip_address }}"
@@ -69,7 +69,7 @@
     amazon.aws.route53:
       state: absent
       zone: "{{ domain_name }}"
-      record: "{{ item }}-{{ env }}.{{ domain_name }}"
+      record: "{{ item.item }}-{{ env }}.{{ domain_name }}"
       type: A
       ttl: 1
     loop: "{{ instances }}"
