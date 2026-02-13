@@ -68,7 +68,7 @@
       record: "{{ item }}-{{ env }}.{{ domain_name}}" # roboshoop.devopspractice08.online, 
       type: A
       ttl: 1
-      loop: "{{instance}}"
+      loop: "{{instances}}"
       when: action == "destroy" 
     
 
@@ -79,5 +79,7 @@
       loop: "{{ instance }}"
 
         
-
+  - name: Install npm dependencies
+    community.general.npm:
+    path: /app
 
