@@ -50,6 +50,10 @@
         src: catalogue.service
         dest: /etc/systemd/system/catalogue.service
 
+    - name: Install npm dependencies
+      community.general.npm:
+        path: /app
+
 
 
 

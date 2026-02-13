@@ -79,7 +79,5 @@
       loop: "{{ instance }}"
 
         
-  - name: Install npm dependencies
-    community.general.npm:
-    path: /app
+ 
 
