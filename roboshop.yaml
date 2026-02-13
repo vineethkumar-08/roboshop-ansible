@@ -11,6 +11,7 @@
     instances:
     - mongodb 
     - catalogue
+    - frontend
   tasks:
   - name: create ec2 instance
     amazon.aws.ec2_instance:
@@ -43,6 +44,8 @@
       ttl: 1
       value: "{{ item.instances[0].private_ip_address }}"
       wait: true
+      overwrite: true
+
     loop: "{{ ec2_output.results }}"  #list 
     when: action == "Create" 
 
