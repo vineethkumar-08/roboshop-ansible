@@ -1,5 +1,5 @@
 - name: create ec2 intance and route53 records
-  hosts: local
+  hosts: all
   connection: local
   vars:
     sg_id: sg-0397ae3d261c3d2e4 
