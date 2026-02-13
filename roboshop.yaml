@@ -9,21 +9,22 @@
     - mongodb 
     - catalogue
   tasks:
-    - name: create ec2 instance
-      amazon.aws.ec2_instance:
-        instance_type: t3.micro
-        security_group: "{{sg_id}}"
-        image_id: "{{ami_id}}"
-        name: "{{ item }}-{{env}}"
+  - name: create ec2 instance
+    amazon.aws.ec2_instance:
+      instance_type: t3.micro
+      security_group: "{{ sg_id }}"
+      image_id: "{{ ami_id} }"
+      name: "{{ item }}-{{ env }}"
       
-        tags:
-          project: roboshop
-          component: "{{item}}"
-          Environment: "{{env}}"
-          name: "{{ item }}-{{env}}}"
-      loop: "{{ instances }}"
-      register: ec2_output
-    - name: print the output
-      ansible.builtin.debug:
-        msg: "{{ec2_output}}:"
+      tags:
+        project: roboshop
+        component: "{{ item }}"
+        Environment: "{{ env }}"
+        name: "{{ item }}-{{ env }}}"
+    loop: "{{ instances }}"
+    register: ec2_output
+
+  - name: print the output
+    ansible.builtin.debug:
+      msg: "{{ ec2_output| to_nice_json}}"
          
