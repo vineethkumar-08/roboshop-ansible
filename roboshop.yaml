@@ -47,14 +47,14 @@
       overwrite: true
 
     loop: "{{ ec2_output.results }}"  #list 
-    when: action == "Create" 
+    when: action == "create" 
 
 
   - name: create route53 records
     amazon.aws.route53:
       state: present
       zone: "{{ domain_name }}"
-      record: "{{ roboshop }}-{{ env }}.{{ domain_name}}" # roboshoop.devopspractice08.online, 
+      record: "{{ item }}-{{ env }}.{{ domain_name}}" # roboshoop.devopspractice08.online, 
       type: A
       ttl: 1
       value: "{{ item.instances[0].public_ip_address }}"
@@ -81,7 +81,7 @@
       state: absent
       name: "{{ item }}-{{ env }}"
     loop: "{{ instances }}"
-
+    when: action == "destroy"
         
  
 
