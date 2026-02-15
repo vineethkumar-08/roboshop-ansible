@@ -3,9 +3,9 @@
   hosts: all
   connection: local
   vars:
-    sg_id: sg-076ec9ad23dab2b28
+    sg_id: sg-0397ae3d261c3d2e4
     ami_id: ami-0220d79f3f480ecf5
-    domain_name: daws88s.online
+    domain_name: devopspractice08.online
     env: dev
     action: create
     instances:
@@ -90,4 +90,4 @@
       name: "{{ item }}-{{ env }}"
       wait: false
     loop: "{{ instances }}"
-    when: action == "destroy"
+    when: action == "destroy"s
