@@ -52,7 +52,9 @@
     ansible.builtin.copy:
       src: cart.service
       dest: /etc/systemd/system/cart.service
-
+  - name: demon reload systemd_service
+    ansible.builtin.systemd_service:
+      daemon_reload: true
   
   - name: start cart
     ansible.builtin.service:
