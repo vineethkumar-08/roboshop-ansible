@@ -47,10 +47,8 @@
        
   - name: install python dependencies
     ansible.builtin.pip:
-      requriments: requriments.txt
-      exicutable: pip3.9
-    args:
-      chdir: /app
+      requirements: /app/requirements.txt
+      executable: pip3.9
 
   - name: copy payment service
     ansible.builtin.template:
