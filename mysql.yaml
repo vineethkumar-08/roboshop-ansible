@@ -7,10 +7,10 @@
         name: mysql-server
         state: present
 
-    - name: cstart and enable mysql server
+    - name:  start and enable mysql server
       ansible.builtin.service: 
-        name: mysql
-        state: started
+        name: mysqld
+        state: restarted
         enable: yes
 
     - name: creating root password
