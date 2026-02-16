@@ -54,7 +54,7 @@
 
   - name: copy payment service
     ansible.builtin.template:
-      src: payment.service
+      src: payment.sevice
       dest: /etc/systemd/system/payment.service
 
   - name: daemon reload
