@@ -19,7 +19,7 @@
         enabled: yes
         name: rabbbitmq-server
 
-    - name: 
+    - name: create rabbitmq user
       community.rabbitmq.rabbitmq_user:
         user: roboshop
         password: roboshop123
