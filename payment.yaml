@@ -44,21 +44,28 @@
       src: /tmp/payment.zip
       dest: /app
       remote_src: yes
-
+       
+  - name: install python dependencies
+    ansible.builtin.pip:
+      requriments: requriments.txt
+      exicutable: pip3.9
+    args:
+      chdir: /app
 
   - name: copy payment service
-    ansible.builtin.copy:
+    ansible.builtin.template:
       src: payment.service
       dest: /etc/systemd/system/payment.service
 
-  - name: install python dependencies
-    community.general.pip:
-      requriments: requriments.txt
+  - name: demon reload
+    ansible.builtin.systemd_service:
+      daemon_reload: true
 
-
+  
   - name: enable and start payment
     enable.builtin.service:
       name: payment
+      state: restarted
       enabled: yes
 
 
