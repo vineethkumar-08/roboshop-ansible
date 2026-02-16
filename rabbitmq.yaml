@@ -17,7 +17,7 @@
       ansible.builtin.service:
         state: restarted
         enable: yes
-        name: rabbbitmq
+        name: rabbbitmq-server
 
     - name: 
       community.rabbitmq.rabbitmq_user:
