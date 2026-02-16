@@ -60,8 +60,8 @@
         dest: /etc/systemd/system/shipping.service
 
     - name: demon reload
-      ansible.builtin.systemd:
-      daemon_reload: true
+      ansible.builtin.systemd_service:
+        daemon_reload: true
 
     - name: import shipping data
       community.mysql.mysql_db:
