@@ -1,0 +1,20 @@
+- name: installing mysql
+  hosts: mysql
+  become: yes
+  tasks:
+    - name: enable mysql
+      ansible.builtin.command: 
+        name: mysql-server
+        state: present
+
+    - name: cstart and enable mysql server
+      ansible.builtin.service: 
+        name: mysql
+        state: started
+        enable: yes
+
+    - name: creating root password
+      ansible.builtin.commanad: mysql_secure_installation --set-root-pass RoboShop@1
+
+
+       
