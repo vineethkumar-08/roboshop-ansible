@@ -51,7 +51,7 @@
       executable: pip3.9
 
   - name: copy payment service
-    ansible.builtin.template:
+    ansible.builtin.copy:
       src: payment.service
       dest: /etc/systemd/system/payment.service
 
