@@ -2,7 +2,7 @@
 - import_playbook: redis.yaml
 - import_playbook: rabbitmq.yaml
 - import_playbook: mysql.yaml
-- import_playbook: catalogue.yaml
+- import_playbook: Catalogue.yaml
 - import_playbook: cart.yaml
 - import_playbook: user.yaml
 - import_playbook: shipping.yaml
